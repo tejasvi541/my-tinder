@@ -22,6 +22,7 @@ const Home = async () => {
 
   const usersWithNoConnections = await getUsersWithNoConnections(user.id);
   const currentUser = await getUserById(user.id);
+  console.log(currentUser);
 
   return (
     <div>
@@ -31,10 +32,10 @@ const Home = async () => {
           users={usersWithNoConnections}
         />
       )}
-      Hi {user.given_name}
+      {/* Hi {user.given_name}
       <pre>
         <code>{JSON.stringify(usersWithNoConnections, null, 2)}</code>
-      </pre>
+      </pre> */}
     </div>
   );
 };

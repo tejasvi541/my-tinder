@@ -17,9 +17,11 @@ const CallbackPage = async () => {
       "/api/auth/login?post_login_redirect_url=http://localhost:3000/callback"
     );
   }
+  console.log(user);
 
   // Check if the user is in Database
   const dbUser = getUserById(user.id);
+  console.log(dbUser);
 
   if (!dbUser) {
     // Create user in Database

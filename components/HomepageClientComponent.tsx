@@ -20,6 +20,8 @@ const HomepageClientComponent: React.FC<HomepageClientComponentProps> = ({
   currentUser,
   users,
 }: HomepageClientComponentProps) => {
+  const handleSwipe = (direction: string, userId: string) => {};
+
   return (
     <div className="w-screen h-screen flex justify-center items-center">
       <div>
@@ -28,9 +30,14 @@ const HomepageClientComponent: React.FC<HomepageClientComponentProps> = ({
             {currentUser.first_name} {currentUser.last_name}
           </h1>
         </div>
-        <div>
+        <div className="mt-5 relative">
           {users.map((user) => (
-            <TinderCard key={user.applicationId}>
+            <TinderCard
+              onSwipe={(direction) => {
+                handleSwipe(direction, user.applicationId);
+              }}
+              className="absolute"
+              key={user.applicationId}>
               <Card>
                 <CardHeader>
                   <CardTitle>
@@ -41,9 +48,6 @@ const HomepageClientComponent: React.FC<HomepageClientComponentProps> = ({
                 <CardContent>
                   <p>Card Content</p>
                 </CardContent>
-                <CardFooter>
-                  <p>Card Footer</p>
-                </CardFooter>
               </Card>
             </TinderCard>
           ))}

@@ -30,3 +30,31 @@ export const getUsersWithNoConnections = async (id: string) => {
   const users = result.records.map((record) => record.get("ou").properties);
   return users as Neo4jUser[];
 };
+
+export const neo4jSwipe = async (id: string, swipe: string, userId: string) => {
+  const type = swipe === "left" ? "DISLIKE" : "LIKE";
+
+  await driver.executeQuery(
+    `MATCH (cu: User {applicationId: $applicationId}), (ou: User {applicationId: $userId}) CREATE (cu)-[:${type}]->(ou)`,
+    {
+      applicationId: id,
+      userId,
+    }
+  );
+
+  if (type === "LIKE") {
+    const result = await driver.executeQuery(
+      `MATCH (cu: User {applicationId: $applicationId}), (ou: User {applicationId: $userId}) WHERE (ou)-[:LIKE]->(cu) RETURN ou as match`,
+      {
+        applicationId: id,
+        userId,
+      }
+    );
+
+    const matches = result.records.map(
+      (record) => record.get("match").properties
+    );
+
+    return Boolean(matches.length);
+  }
+};
