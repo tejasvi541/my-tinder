@@ -20,7 +20,7 @@ const CallbackPage = async () => {
   console.log(user);
 
   // Check if the user is in Database
-  const dbUser = getUserById(user.id);
+  const dbUser = await getUserById(user.id);
   console.log(dbUser);
 
   if (!dbUser) {

@@ -20,6 +20,7 @@ export const createUser = async (user: Neo4jUser) => {
     `CREATE (user:User {applicationId: $applicationId, first_name: $first_name, last_name: $last_name, email: $email})`,
     user
   );
+  console.log("User created");
 };
 
 export const getUsersWithNoConnections = async (id: string) => {
