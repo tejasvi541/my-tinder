@@ -1,5 +1,7 @@
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { redirect } from "next/navigation";
+import { getUserById, getUsersWithNoConnections } from "./neo4j.action";
+import HomepageClientComponent from "@/components/HomepageClientComponent";
 
 const Home = async () => {
   const { isAuthenticated, getUser } = getKindeServerSession();
@@ -18,7 +20,23 @@ const Home = async () => {
     );
   }
 
-  return <div>Hi {user.given_name}</div>;
+  const usersWithNoConnections = await getUsersWithNoConnections(user.id);
+  const currentUser = await getUserById(user.id);
+
+  return (
+    <div>
+      {currentUser && (
+        <HomepageClientComponent
+          currentUser={currentUser}
+          users={usersWithNoConnections}
+        />
+      )}
+      Hi {user.given_name}
+      <pre>
+        <code>{JSON.stringify(usersWithNoConnections, null, 2)}</code>
+      </pre>
+    </div>
+  );
 };
 
 export default Home;
